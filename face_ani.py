@@ -10,7 +10,6 @@ import os
 
 app = FastAPI()
 
-# Allow frontend access
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -19,7 +18,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mediapipe setup
 mp_face_detection = mp.solutions.face_detection
 face_detection = mp_face_detection.FaceDetection(min_detection_confidence=0.5)
 
@@ -30,7 +28,6 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             data = await websocket.receive_text()
 
-            # Decode base64 image
             try:
                 image_data = base64.b64decode(data.split(",")[-1])
                 image = Image.open(BytesIO(image_data)).convert("RGB")
